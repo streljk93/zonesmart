@@ -1,9 +1,31 @@
-import ZsInput from '@/components/zs-input';
+import ZsInput from '@/components/ui/zs-input';
 
 export default {
     title: 'Controls/Input',
     component: ZsInput,
     argTypes: {
+        label: {
+            control: 'text',
+            defaultValue: 'E-mail или телефон',
+        },
+        is_password: {
+            control: {
+                type: 'inline-radio',
+                options: [true, false],
+            },
+            defaultValue: false,
+        },
+        show_error: {
+            control: {
+                type: 'inline-radio',
+                options: [true, false],
+            },
+            defaultValue: false,
+        },
+        error_message: {
+            control: 'text',
+            defaultValue: 'Введены неверные данные',
+        },
         handleInput: {
             action: 'input',
         },
@@ -21,9 +43,9 @@ const Template = (args, {argTypes}) => ({
     template: `
         <zs-input
             v-model="text"
-            label="E-mail или телефон"
-            type="password"
-            error_message="Введены неверные данные"
+            :label="label"
+            :type="is_password ? 'password' : 'text'"
+            :error_message="show_error ? error_message : ''"
             @input="handleInput"
         ></zs-input>
     `
