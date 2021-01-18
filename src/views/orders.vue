@@ -1,5 +1,5 @@
 <template lang="pug">
-    p orders
+    p.orders orders
 </template>
 
 <script>
