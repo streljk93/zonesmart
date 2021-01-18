@@ -3,14 +3,29 @@ import ZsInput from '@/components/zs-input';
 export default {
     title: 'Controls/Input',
     component: ZsInput,
-    argTypes: {},
+    argTypes: {
+        handleInput: {
+            action: 'input',
+        },
+    },
 }
 
-const Template = () => ({
+const Template = (args, {argTypes}) => ({
+    props: Object.keys(argTypes),
     components: {ZsInput},
-    language: 'pug',
+    data() {
+       return {
+           text: 'hello',
+       }
+    },
     template: `
-        <zs-input />
+        <zs-input
+            v-model="text"
+            label="E-mail или телефон"
+            type="password"
+            error_message="Введены неверные данные"
+            @input="handleInput"
+        ></zs-input>
     `
 })
 
