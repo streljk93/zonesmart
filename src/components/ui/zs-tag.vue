@@ -1,5 +1,6 @@
 <template lang="pug">
-    .zs-tag ebay
+    .zs-tag
+        slot
 </template>
 
 <script>
