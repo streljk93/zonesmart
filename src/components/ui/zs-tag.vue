@@ -1,5 +1,5 @@
 <template lang="pug">
-    .zs-tag(:class="`zs-tag_${type}`")
+    .zs-tag(:class="`zs-tag_${type} zs-tag_${theme}`")
         span(v-if="type === 'icon'")
             i(:class="$slots.default[0].text")
         span(v-else)
@@ -14,10 +14,11 @@ export default {
             type: String,
             default: 'text',
         },
+        theme: {
+            type: String,
+            default: 'accent',
+        }
     },
-    created() {
-        console.log(this.$slots.default[0].text)
-    }
 }
 </script>
 
@@ -28,8 +29,13 @@ export default {
     display: inline-flex
     justify-content: center
     align-items: center
-    background: $--color-accent
-    color: $--color-white
+
+    &_accent
+        background: $--color-accent
+        color: $--color-white
+    &_background
+        background: $--color-background
+        color: $--color-typo
 
     &_text
         height: 22px
