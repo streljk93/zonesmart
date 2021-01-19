@@ -35,6 +35,9 @@ export default {
     border-width: 0
     color: $--color-white
     cursor: pointer
+    display: inline-flex
+    align-items: center
+    justify-content: center
 
     &--accent
         background: $--color-accent

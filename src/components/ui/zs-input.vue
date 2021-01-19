@@ -7,9 +7,10 @@
                 :type="type_field"
                 class="zs-input--input"
                 :class="{'zs-input--input_invalid': error_message, 'zs-input--input_valid': value_state}"
+                autocomplete="off"
             )
-            .zs-input--label
-                label(:for="`zs-input-${_uid}`") {{label}}
+            label.zs-input--label(:for="`zs-input-${_uid}`")
+                .zs-input--label-wrap {{label}}
             .zs-input--error-message {{error_message}}
             .zs-input--append(v-show="$slots.append || type === 'password'")
                 slot(name="append")
@@ -66,16 +67,15 @@ export default {
 
 <style lang="sass" scoped>
 .zs-input
-    display: inline-block
     padding: 5px 0 16px
     overflow: hidden
     &_focused &--label
         @include mix--typography-caption
-        transform: translateY(-24px)
+        transform: translateY(-26px)
 
     &--wrap
         position: relative
-        width: 184px
+        width: 100%
         height: 52px
 
     &--input
@@ -86,6 +86,13 @@ export default {
         height: 100%
         width: 100%
         color: $--color-typo
+        background: $--color-white
+        &:-webkit-autofill,
+        &:-webkit-autofill:hover,
+        &:-webkit-autofill:focus,
+        &:-webkit-autofill:active
+            -webkit-box-shadow: 0 0 0 30px white inset !important
+
         &_valid
             border-color: $--color-accent
         &_invalid
@@ -94,18 +101,19 @@ export default {
             border-color: $--color-accent
             + .zs-input--label
                 @include mix--typography-caption
-                transform: translateY(-24px)
+                transform: translateY(-26px)
     &--label
         @include mix--typography-body1
         margin: 0 13px
         color: $--color-typo-label
         position: absolute
-        top: 12px
+        top: 14px
         left: 0
         right: 0
         cursor: text
         transition: .2s
-        label
+        &-wrap
+            display: inline-block
             background: $--color-white
             padding: 0 2px
             cursor: text

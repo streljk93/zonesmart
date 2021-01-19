@@ -2,7 +2,7 @@
     .zs-alert(:class="`zs-alert_${type}`")
         .zs-alert--icon
             span
-                i.icon-check-copy-1
+                i(:class="icon")
         .zs-alert--message
             slot
 </template>
@@ -14,6 +14,14 @@ export default {
         type: {
             type: String,
             default: 'info',
+        },
+    },
+
+    computed: {
+        icon() {
+            if (this.type === 'error') return 'icon-x-copy-1'
+
+            return 'icon-check-copy-1'
         },
     },
 }
@@ -29,6 +37,9 @@ export default {
     background: $--color-background
     &_success
         background: $--color-accent
+    &_error
+        background: $--color-error
+        color: $--color-white
     &--icon span
         border-radius: 50%
         height: 26px
