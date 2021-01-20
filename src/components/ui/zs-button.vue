@@ -31,7 +31,7 @@ export default {
 <style lang="sass" scoped>
 .zs-button
     @include mix--typography-button
-    border-radius: $--border-md
+    border-radius: $--border-radius-md
     border-width: 0
     color: $--color-white
     cursor: pointer

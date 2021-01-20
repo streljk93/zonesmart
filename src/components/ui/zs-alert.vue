@@ -29,7 +29,7 @@ export default {
 
 <style lang="sass" scoped>
 .zs-alert
-    border-radius: $--border-md
+    border-radius: $--border-radius-md
     display: inline-flex
     height: 45px
     padding: 0 20px

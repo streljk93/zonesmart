@@ -78,7 +78,7 @@ export default {
 
     &--input
         @include mix--typography-body1
-        border-radius: $--border-lg
+        border-radius: $--border-radius-lg
         border: 1px solid $--color-gray
         padding: 0 15px
         height: 100%

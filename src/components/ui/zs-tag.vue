@@ -25,7 +25,7 @@ export default {
 <style lang="sass" scoped>
 .zs-tag
     @include mix--typography-caption
-    border-radius: $--border-sm
+    border-radius: $--border-radius-sm
     display: inline-flex
     justify-content: center
     align-items: center
