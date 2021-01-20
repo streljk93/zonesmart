@@ -3,6 +3,7 @@
         v-bind="$attrs"
         :class="`zs-button--${type} zs-button--${size}`"
         :disabled="$attrs.disabled || loading"
+        @click="$emit('click')"
     )
         slot(v-if="!loading")
         span(v-else) загрузка...
