@@ -2,8 +2,7 @@
     label.zs-checkbox
         input(
             type="checkbox"
-            :checked="value"
-            @change="$emit('input', $event.target.checked)"
+            v-model="value_state"
         )
         div
             i.icon-check-copy-1
@@ -17,6 +16,24 @@ export default {
             type: Boolean,
             default: false
         },
+    },
+
+    data() {
+        return {
+            value_state: false,
+        }
+    },
+
+    watch: {
+        value: {
+            handler(v) {
+                this.value_state = v
+            },
+            immediate: true,
+        },
+        value_state(v) {
+            this.$emit('input', v)
+        }
     },
 }
 </script>
