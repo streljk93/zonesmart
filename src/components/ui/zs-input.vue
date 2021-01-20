@@ -67,8 +67,6 @@ export default {
 
 <style lang="sass" scoped>
 .zs-input
-    padding: 5px 0 16px
-    overflow: hidden
     &_focused &--label
         @include mix--typography-caption
         transform: translateY(-26px)
