@@ -68,6 +68,12 @@ const Template = () => ({
                     length: 1,
                     price: 10,
                     amount: 10,
+                }, {
+                    name: 'Какое-то название',
+                    label: 'mac_pro_16_10',
+                    length: 1,
+                    price: 10,
+                    amount: 10,
                 }],
                 date: '01.11.2020',
                 status: 'В ожидании оплаты',
@@ -130,8 +136,31 @@ const Template = () => ({
             :header="header"
             :data="tableData"
             with_select
+            with_expand
             @select="handleSelect"
         >
+            <template #expand="{value}">
+                <zs-table
+                    :header="[{
+                        label: 'Название/SKU',
+                        value: 'name',
+                    }, {
+                        label: 'Заказанное количество',
+                        value: 'length',
+                    }, {
+                        label: 'Отправленное количество',
+                        value: 'length',
+                    }, {
+                        label: 'Цена',
+                        value: 'price',
+                    }, {
+                        label: 'Стоимость',
+                        value: 'amount',
+                    }]"
+                    :data="value.items"
+                    with_simple_header
+                ></zs-table>
+            </template>
             <template #cell.id="{value}">
                 <zs-link
                     style="white-space: nowrap"
@@ -140,12 +169,15 @@ const Template = () => ({
                     {{value}}
                 </zs-link>
             </template>
-            <template #cell.items="{value}">
+            <template #cell.items="{value, index, items_of_expands, handleToggleSubrow}">
                 <zs-link
                     style="white-space: nowrap; display: flex; align-items: center;"
-                    @click="handleOpen"
+                    @click="handleToggleSubrow(index)"
                 >
-                    <i class="icon-x-copy-1" style="font-size: 18px; transform: rotate(45deg); margin-right: 8px" />
+                    <i
+                        class="icon-x-copy-1"
+                        :style="'font-size: 18px; transform: rotate(' + (items_of_expands[index] ? '0deg' : '45deg') + '); margin-right: 8px'"
+                    />
                     {{value.length}} товар(а)
                 </zs-link>
             </template>

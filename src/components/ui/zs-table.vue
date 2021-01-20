@@ -1,7 +1,7 @@
 <template lang="pug">
     .zs-table
         table
-            thead
+            thead(:class="{'zs-table--simple-header': with_simple_header}")
                 tr
                     th(v-if="with_select")
                         zs-checkbox(
@@ -11,19 +11,31 @@
                         slot(:name="`header.${head.value}`")
                             | {{head.label}}
             tbody
-                tr(v-for="(item, index) in data" :key="index")
-                    td(v-if="with_select")
-                        zs-checkbox(
-                            :ref="`checkbox-${index}`"
-                            @input="handleSelect(index, $event, item)"
+                template(v-for="(item, index) in data")
+                    tr(:key="index" :class="{'zs-table--hr-hidden': items_of_expands[index]}")
+                        td(v-if="with_select")
+                            zs-checkbox(
+                                :ref="`checkbox-${index}`"
+                                @input="handleSelect(index, $event, item)"
+                            )
+                        td(
+                            v-for="(head, index_of_head) in header"
+                            :key="index_of_head"
+                            :class="`zs-table--align-${head.align ? head.align : 'left'}`"
                         )
-                    td(
-                        v-for="(head, index) in header"
-                        :key="index"
-                        :class="`zs-table--align-${head.align ? head.align : 'left'}`"
-                    )
-                        slot(:name="`cell.${head.value}`" :value="item[head.value]")
-                            | {{item[head.value]}}
+                            slot(
+                                :name="`cell.${head.value}`"
+                                :index="index"
+                                :value="item[head.value]"
+                                :items_of_expands="items_of_expands"
+                                :handleToggleSubrow="handleToggleSubrow"
+                            )
+                                | {{item[head.value]}}
+
+                    transition(name="zs-table--subrow")
+                        tr(v-if="with_expand && items_of_expands[index]" :key="`subtr-${index}`")
+                            td(:colspan="cell_length" class="zs-table--subcell")
+                                slot(name="expand" :value="item")
 </template>
 
 <script>
@@ -46,11 +58,30 @@ export default {
             type: Boolean,
             default: false,
         },
+        with_expand: {
+            type: Boolean,
+            default: false,
+        },
+        with_simple_header: {
+            type: Boolean,
+            default: false,
+        },
     },
 
     data() {
         return {
             selected: {},
+            items_of_expands: {},
+        }
+    },
+    computed: {
+        cell_length() {
+            if (this.data[0]) {
+                const length = Object.keys(this.data[0]).length
+                return this.with_select ? length + 1 : length
+            }
+
+            return 0
         }
     },
 
@@ -71,8 +102,22 @@ export default {
             }
 
             this.$emit('select', Object.values(this.selected))
+        },
+        handleToggleSubrow(index) {
+            if (!this.with_expand) return false
+
+            this.$set(this.items_of_expands, index, !this.items_of_expands[index])
         }
-    }
+    },
+
+    watch: {
+        data() {
+            // expandable
+            if (this.with_expand) {
+                this.items_of_axpands = {}
+            }
+        },
+    },
 }
 </script>
 
@@ -116,6 +161,19 @@ export default {
                 &:last-child
                     border-radius: 0 0 $--border-radius-lg 0
 
+    &--subrow
+        &-enter-active, &-leave-active
+            transition: opacity .3s
+        &-enter, &-leave-to
+            opacity: 0
+
+    tr td.zs-table--subcell
+        > div
+            border-radius: $--border-radius-lg
+            background: $--color-background
+            padding: 28px 19px 20px 63px
+            margin-bottom: 20px
+
     // separating
     tbody:before
         content: '-'
@@ -124,7 +182,12 @@ export default {
         color: transparent
     table
         position: relative
+
+    .zs-table--hr-hidden + tr:after
+        opacity: 0 !important
     tbody tr:not(:first-child):after
+        opacity: 1
+        transition: opacity .5s
         content: ''
         display: block
         background: $--color-gray
@@ -135,6 +198,10 @@ export default {
         margin: 0 20px
 
     // row + cell
+    thead.zs-table--simple-header tr
+        background: none
+        th
+            height: auto
     tr
         background: $--color-white
 
