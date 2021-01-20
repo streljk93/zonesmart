@@ -1,7 +1,7 @@
 <template lang="pug">
     .zs-tag(:class="`zs-tag_${type} zs-tag_${theme}`")
         span(v-if="type === 'icon'")
-            i(:class="$slots.default[0].text")
+            i(:class="$slots.default ? $slots.default[0].text : ''")
         span(v-else)
             slot
 </template>
@@ -29,6 +29,9 @@ export default {
     display: inline-flex
     justify-content: center
     align-items: center
+    span
+        display: inline-flex
+        align-items: center
 
     &_accent
         background: $--color-accent
