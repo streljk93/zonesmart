@@ -15,7 +15,7 @@ export default {
 
 <style lang="sass" scoped>
 .zs-master
-    height: 100vh
+    min-height: 100vh
     display: grid
     grid-template-columns: 220px 1fr
     grid-template-rows: 63px auto
