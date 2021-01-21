@@ -112,7 +112,7 @@ export default {
         transition: .2s
         &-wrap
             display: inline-block
-            background: $--color-white
+            background: linear-gradient(to top, $--color-white 50%, transparent, transparent)
             padding: 0 2px
             cursor: text
 
@@ -131,6 +131,7 @@ export default {
         top: 14px
         right: 15px
         background: $--color-white
+        color: $--color-gray
         &_password
             cursor: pointer
             color: $--color-gray
