@@ -1,15 +1,16 @@
 <template lang="pug">
     validation-observer.zs-login-form(v-slot="{invalid}")
         zs-alert.zs-login-form--alert(
+            v-show="error"
             type="error"
             style="width: 100%"
-        ) Логин или пароль неверны
+        ) {{error}}
         .zs-login-form--sheet
             zs-sheet
                 .zs-login-form--title Вход
                 .zs-login-form--item
                     validation-provider(rules="required" v-slot="{errors}")
-                        zs-input(v-model="login" label="E-mail или телефон" :error_message="errors[0]")
+                        zs-input(v-model="email" label="E-mail или телефон" :error_message="errors[0]")
                 .zs-login-form--item
                     validation-provider(rules="required" v-slot="{errors}")
                         zs-input(v-model="password" label="Пароль" type="password" :error_message="errors[0]")
@@ -19,6 +20,7 @@
                         zs-button(
                             :disabled="invalid"
                             style="width: 100%"
+                            @click="handleCreateAuth"
                         ) Войти
                     div(style="text-align: center")
                         zs-link Зарегистрироваться
@@ -45,10 +47,30 @@ export default {
 
     data() {
         return {
-            login: '',
-            password: '',
+            email: 'test@zonesmart.ru',
+            password: '4815162342test',
+            error: '',
         }
     },
+
+    methods: {
+        async handleCreateAuth() {
+            try {
+                await this.$store.dispatch('auth/createAuth', {
+                    email: this.email,
+                    password: this.password,
+                })
+
+                this.$router.push({name: 'Orders'})
+            } catch (e) {
+                const res = e.response || {}
+                const status = res.status || 0
+                const statusText = res.statusText || 'empty'
+
+                this.error = `${status} / ${statusText}`
+            }
+        },
+    }
 }
 </script>
 

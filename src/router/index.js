@@ -2,6 +2,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+// app
+import hooks from './hooks'
+
 // views
 import Login from '@/views/login'
 import Orders from '@/views/orders'
@@ -37,5 +40,7 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 })
+
+hooks(router)
 
 export default router
