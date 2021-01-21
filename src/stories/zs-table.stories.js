@@ -125,13 +125,13 @@ const Template = () => ({
     },
     methods: {
         handleOpen() {
-            console.log('open')
+            console.info('open')
         },
         handleSelect(selected) {
-            console.log('selected', selected)
+            console.info('selected', selected)
         },
         handlePrint(selected) {
-            console.log('print', selected)
+            console.info('print', selected)
         },
     },
     template: `

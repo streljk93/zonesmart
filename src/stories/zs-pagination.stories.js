@@ -12,11 +12,6 @@ const Template = () => ({
            current_page: 1,
        }
     },
-    methods: {
-       handleChangeCurrent(v) {
-           console.warn(v)
-       }
-    },
     template: `
         <zs-pagination />
     `

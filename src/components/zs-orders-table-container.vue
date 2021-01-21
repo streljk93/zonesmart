@@ -10,7 +10,6 @@
             :data="table_data"
             with_select
             with_expand
-            @select="handleSelect"
         )
             template(#actions="{selected}")
                 zs-link(
@@ -35,7 +34,7 @@
             template(#cell.order_id="{value}")
                 zs-link(
                     style="white-space: nowrap"
-                    @click="handleOpen"
+                    @click="handleOpen(value)"
                 ) {{value}}
 
             template(#cell.items="{value, index, items_of_expands, handleToggleSubrow}")
@@ -167,14 +166,11 @@ export default {
         handlePagination(params) {
             params && this.fetchData(params)
         },
-        handleOpen() {
-            console.log('open')
-        },
-        handleSelect(selected) {
-            console.log('selected', selected)
+        handleOpen(value) {
+            console.info(`open ${value}`)
         },
         handlePrint(selected) {
-            console.log('print', selected)
+            console.info('print', selected)
         },
     },
 
