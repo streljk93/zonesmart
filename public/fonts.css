@@ -1,0 +1,63 @@
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?h0xb2t');
+  src:  url('fonts/icomoon.eot?h0xb2t#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?h0xb2t') format('truetype'),
+    url('fonts/icomoon.woff?h0xb2t') format('woff'),
+    url('fonts/icomoon.svg?h0xb2t#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-arrow-left-copy-1:before {
+  content: "\e90b";
+}
+.icon-arrow-right-copy-1:before {
+  content: "\e900";
+}
+.icon-bell-copy-1:before {
+  content: "\e901";
+}
+.icon-check-copy-1:before {
+  content: "\e902";
+}
+.icon-corner-up-right-copy-1:before {
+  content: "\e903";
+}
+.icon-eye-copy-1:before {
+  content: "\e904";
+}
+.icon-eye-off-copy-1:before {
+  content: "\e905";
+}
+.icon-mail-copy-1:before {
+  content: "\e906";
+}
+.icon-menu-copy-1:before {
+  content: "\e907";
+}
+.icon-search-copy-1:before {
+  content: "\e908";
+}
+.icon-trash:before {
+  content: "\e909";
+}
+.icon-x-copy-1:before {
+  content: "\e90a";
+}

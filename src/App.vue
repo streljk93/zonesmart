@@ -1,32 +1,24 @@
-<template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+<template lang="pug">
+    div
+        zs-message(ref="message")
+        router-view
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+// components
+import ZsMessage from '@/components/ui/zs-message'
 
-#nav {
-  padding: 30px;
+export default {
+    name: 'App',
+    components: {ZsMessage},
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+    mounted() {
+        this.$EventBus.$on('showMessage', (data) => {
+            this.$refs.message.show(data)
+        })
     }
-  }
 }
+</script>
+
+<style lang="sass">
 </style>
