@@ -4,10 +4,11 @@ import * as api from '@/api/orders'
 // modules
 import entity from '@/store/modules/entity'
 import request from '@/store/modules/request'
+import pagination from '@/store/modules/pagination'
 
 export default {
     namespaced: true,
-    modules: {entity, request},
+    modules: {entity, request, pagination},
 
     actions: {
         fetchZonesmartOrders({commit}, data) {
@@ -16,7 +17,8 @@ export default {
             return api.fetchZonesmartOrders(data)
                 .then(({data}) => {
                     commit('request/SUCCESS')
-                    commit('entity/SET_LIST', data)
+                    commit('entity/SET_LIST', data.results)
+                    commit('pagination/SET', data)
 
                     return data
                 })

@@ -18,11 +18,7 @@ const Template = () => ({
        }
     },
     template: `
-        <zs-pagination
-            :current_page.sync="current_page"
-            :total="180"
-            @change-current="handleChangeCurrent"
-        />
+        <zs-pagination />
     `
 })
 

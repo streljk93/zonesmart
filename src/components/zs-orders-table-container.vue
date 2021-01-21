@@ -64,7 +64,9 @@
 
         .zs-orders-table--pagination
             zs-pagination(
-                :total="pagination.count"
+                :value="pagination"
+                @click_previous="handlePagination"
+                @click_next="handlePagination"
             )
 </template>
 
@@ -148,15 +150,10 @@ export default {
     },
     computed: {
         table_data() {
-            return this.$store.state.orders.entity.list.results
+            return this.$store.state.orders.entity.list
         },
         pagination() {
-            const list = this.$store.state.orders.entity.list
-            return {
-                count: list.count,
-                next: list.next,
-                previous: list.previous,
-            }
+            return this.$store.state.orders.pagination
         },
         sync() {
             return true
@@ -166,6 +163,9 @@ export default {
     methods: {
         fetchData(options) {
             this.$store.dispatch('orders/fetchZonesmartOrders', options)
+        },
+        handlePagination(params) {
+            params && this.fetchData(params)
         },
         handleOpen() {
             console.log('open')

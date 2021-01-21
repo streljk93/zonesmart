@@ -3,20 +3,20 @@
         .zs-pagination--arrow
             zs-button(
                 type="icon"
-                :disabled="left_is_disabled"
-                @click="handleClickLeft"
+                :disabled="!value.previous"
+                @click="$emit('click_previous', previous_object)"
             ) icon-arrow-left-copy-1
         .zs-pagination--text
             | {{from_size}}
             | —
             | {{to_size}}
             | из
-            | {{total}}
+            | {{value.count}}
         .zs-pagination--arrow
             zs-button(
                 type="icon"
-                :disabled="right_is_disabled"
-                @click="handleClickRight"
+                :disabled="!value.next"
+                @click="$emit('click_next', next_object)"
             ) icon-arrow-right-copy-1
 </template>
 
@@ -28,59 +28,36 @@ export default {
     name: 'ZsPagination',
     components: {ZsButton},
     props: {
-        current_page: {
-            type: Number,
-            default: 1,
-        },
-        page_size: {
-            type: Number,
-            default: 10,
-        },
-        total: {
-            type: Number,
-            default: 0,
+        value: {
+            type: Object,
+            default: () => ({
+                previous: '',
+                next: '',
+                count: 0,
+            }),
         },
     },
 
     computed: {
-        left_is_disabled() {
-            return this.current_page === 1
+        previous_object() {
+            return this.$store.getters['orders/pagination/previous_object']
         },
-        right_is_disabled() {
-            return this.current_page === Math.ceil(this.total / this.page_size)
+        next_object() {
+            return this.$store.getters['orders/pagination/next_object']
         },
         from_size() {
-            return (this.current_page - 1) * this.page_size
+            if (!this.next_object) {
+                return Number(this.previous_object.offset) + Number(this.previous_object.limit)
+            }
+
+            return this.next_object.offset - this.next_object.limit
         },
         to_size() {
-            if (this.total < this.page_size) return this.total
+            if (!this.next_object) return this.value.count
 
-            return ((this.current_page - 1) * this.page_size) + this.page_size
-        },
-    },
-
-    methods: {
-        handleClickLeft() {
-            const current_page = this.current_page - 1
-
-            this.$emit('update:current_page', current_page)
-            this.$emit('change-current', {
-                current_page,
-                page_size: this.page_size,
-                total: this.total,
-            })
-        },
-        handleClickRight() {
-            const current_page = this.current_page + 1
-
-            this.$emit('update:current_page', current_page)
-            this.$emit('change-current', {
-                current_page,
-                page_size: this.page_size,
-                total: this.total,
-            })
+            return this.next_object.offset
         }
-    }
+    },
 }
 </script>
 
