@@ -1,7 +1,6 @@
 <template lang="pug">
-    .zs-message(:class="{'zs-message_visible': value_state}")
-        zs-alert(:type="type")
-            slot
+    .zs-message(:class="{'zs-message_visible': value}")
+        zs-alert(:type="type") {{text}}
 </template>
 
 <script>
@@ -11,48 +10,40 @@ import ZsAlert from '@/components/ui/zs-alert'
 export default {
     name: 'ZsMessage',
     components: {ZsAlert},
-    props: {
-        value: {
-            type: Boolean,
-            default: false,
-        },
-        type: {
-            type: String,
-            default: 'info',
-        },
-        delay: {
-            type: Number,
-            default: null,
-        },
-    },
 
     data() {
         return {
-            timeout: null
+            timeout: null,
+            value: false,
+            type: 'info',
+            text: 'Текст по умполчанию',
+            delay: 5000,
         }
     },
-    computed: {
-        value_state: {
-            get() {
-                return this.value
-            },
-            set(v) {
-                this.$emit('input', v)
-            },
+
+    methods: {
+        show({type, text, options}) {
+            this.type = type
+            this.text = text
+
+            // set options
+            if (options) {
+                this.delay = options.delay
+            }
+
+            this.value = true
         }
     },
 
     watch: {
-        value: {
-            handler(v) {
-                if (v && this.delay) {
-                    this.timeout = setTimeout(() => {
-                        this.value_state = false
-                    }, this.delay)
-                }
-            },
-            immediate: true,
-        }
+        value(v) {
+            if (v && this.delay) {
+                clearTimeout(this.timeout)
+                this.timeout = setTimeout(() => {
+                    this.value = false
+                }, this.delay)
+            }
+        },
     },
 }
 </script>

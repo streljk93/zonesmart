@@ -1,51 +1,27 @@
 import ZsMessage from '@/components/ui/zs-message'
+import ZsButton from '@/components/ui/zs-button'
 
 export default {
     title: 'Messages',
     component: ZsMessage,
-    argTypes: {
-        value: {
-            control: 'boolean',
-            defaultValue: true,
-        },
-        delay: {
-            control: 'number',
-            defaultValue: 2000,
-        },
-        type: {
-            control: {
-                type: 'inline-radio',
-                options: ['info', 'success'],
-            },
-            defaultValue: 'info',
-        },
-    },
 }
 
-const Template = (args, {argTypes}) => ({
-    props: Object.keys(argTypes),
-    components: {ZsMessage},
-    data() {
-        return {
-            visibility: true,
-        }
+const Template = () => ({
+    components: {ZsMessage, ZsButton},
+    methods: {
+        handleOpen() {
+            this.$refs.message.show({
+                type: 'success',
+                text: 'Пароль от zonesmart@gmail.ru был успешно изменен',
+            })
+        },
     },
     template: `
-        <zs-message
-            v-model="visibility"
-            :type="type"
-            :delay="delay"
-        >
-            Пароль от zonesmart@gmail.ru был успешно изменен
-        </zs-message>
+        <div>
+            <zs-message ref="message" />
+            <zs-button @click="handleOpen">open</zs-button>
+        </div>
     `,
-    watch: {
-        value(v) {
-            if (v) {
-                this.visibility = v
-            }
-        },
-    }
 })
 
 export const Default = Template.bind({})
