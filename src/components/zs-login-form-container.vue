@@ -1,18 +1,18 @@
 <template lang="pug">
-    .zs-form-login
-        zs-alert.zs-form-login--alert(
+    .zs-login-form
+        zs-alert.zs-login-form--alert(
             type="error"
             style="width: 100%"
         ) Логин или пароль неверны
-        .zs-form-login--sheet
+        .zs-login-form--sheet
             zs-sheet
-                .zs-form-login--title Вход
-                .zs-form-login--item
+                .zs-login-form--title Вход
+                .zs-login-form--item
                     zs-input(label="E-mail или телефон")
-                .zs-form-login--item
+                .zs-login-form--item
                     zs-input(label="Пароль" type="password")
                     zs-link(style="margin-top: 10")
-                .zs-form-login--actions
+                .zs-login-form--actions
                     div
                         zs-button(style="width: 100%") Войти
                     div(style="text-align: center")
@@ -29,7 +29,7 @@ import ZsButton from '@/components/ui/zs-button'
 import ZsAlert from '@/components/ui/zs-alert'
 
 export default {
-    name: 'ZsFormLoginContainer',
+    name: 'ZsLoginFormContainer',
     components: {
         ZsSheet,
         ZsInput,
@@ -41,7 +41,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.zs-form-login
+.zs-login-form
     width: 100%
     display: inline-flex
     flex-direction: column

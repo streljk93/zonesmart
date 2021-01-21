@@ -4,19 +4,19 @@
             .login-page--logo
                 zs-logo
             .login-page--form
-                zs-form-login-container
+                zs-login-form-container
         .login-page--bottom
             .login-page--sign © 2020 ООО «ЗОНСМАРТ». Все права защищены.
 </template>
 
 <script>
 // Components
-import ZsFormLoginContainer from '@/components/zs-form-login-container'
+import ZsLoginFormContainer from '@/components/zs-login-form-container'
 import ZsLogo from '@/components/ui/zs-logo'
 
 export default {
     name: 'Login',
-    components: {ZsFormLoginContainer, ZsLogo},
+    components: {ZsLoginFormContainer, ZsLogo},
 }
 </script>
 
