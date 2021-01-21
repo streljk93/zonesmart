@@ -15,7 +15,7 @@ export default {
 
             return api.createAuth(email, password)
                 .then(({data}) => {
-                    commit('request/SUCCESS')
+                    commit('request/SUCCESS', {message: 'Вы успешно вошли в zonesmart!'})
                     commit('entity/SET_ITEM', data)
                     localStorage.setItem('auth', JSON.stringify(data))
 

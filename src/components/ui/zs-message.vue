@@ -57,6 +57,6 @@ export default {
     transition: .2s
     opacity: 0
     &_visible
-        transform: translate(-50%, calc(100% + 78px))
+        transform: translate(-50%, calc(100%))
         opacity: 1
 </style>

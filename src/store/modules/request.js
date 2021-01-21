@@ -4,17 +4,17 @@ import {EventBus} from '@/config/setting/event-bus'
 export default {
     namespaced: true,
     state: {
-        isFetching: false,
+        is_fetching: false,
     },
 
     mutations: {
         REQUEST(state) {
-            state.isFetching = true
+            state.is_fetching = true
         },
         SUCCESS(state, payload = {}) {
             const {message} = payload
 
-            state.isFetching = false
+            state.is_fetching = false
             message && EventBus.$emit('showMessage', {
                 type: 'success',
                 text: message,
@@ -24,7 +24,7 @@ export default {
             const response = error.response
             const mess = `${response.status} / ${response.statusText}`
 
-            state.isFetching = false
+            state.is_fetching = false
             if (response.status !== null) {
                 EventBus.$emit('showMessage', {
                     type: 'error',

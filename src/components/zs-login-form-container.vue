@@ -19,6 +19,7 @@
                     div
                         zs-button(
                             :disabled="invalid"
+                            :loading="is_fetching"
                             style="width: 100%"
                             @click="handleCreateAuth"
                         ) Войти
@@ -51,6 +52,11 @@ export default {
             password: '4815162342test',
             error: '',
         }
+    },
+    computed: {
+        is_fetching() {
+            return this.$store.state.auth.request.is_fetching
+        },
     },
 
     methods: {
