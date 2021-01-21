@@ -130,6 +130,9 @@ const Template = () => ({
         handleSelect(selected) {
             console.log('selected', selected)
         },
+        handlePrint(selected) {
+            console.log('print', selected)
+        },
     },
     template: `
         <zs-table
@@ -139,6 +142,9 @@ const Template = () => ({
             with_expand
             @select="handleSelect"
         >
+            <template #actions="{selected}">
+                <zs-link style="font-weight: 500;" @click="handlePrint(selected)">Распечатать инвойс</zs-link>
+            </template>
             <template #expand="{value}">
                 <zs-table
                     :header="[{

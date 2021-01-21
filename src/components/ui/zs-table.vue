@@ -1,6 +1,14 @@
 <template lang="pug">
     .zs-table
         table
+            colgroup
+                col(v-if="with_select")
+                col(
+                    v-for="(head, index) in header"
+                    :key="index"
+                    :name="`zs-table-col-${head.value}`"
+                    :width="head.width || 'auto'"
+                )
             thead(:class="{'zs-table--simple-header': with_simple_header}")
                 tr
                     th(v-if="with_select")
@@ -9,7 +17,11 @@
                         )
                     th(v-for="(head, index) in header" :key="index")
                         slot(:name="`header.${head.value}`")
-                            | {{head.label}}
+                            div(v-if="has_selected" style="position: relative")
+                                div(v-if="!index" style="position: absolute; z-index: 1;")
+                                    slot(name="actions" :selected="Object.values(selected)")
+                                div(style="visibility: hidden") {{head.label}}
+                            div(v-else) {{head.label}}
             tbody
                 template(v-for="(item, index) in data")
                     tr(:key="index" :class="{'zs-table--hr-hidden': items_of_expands[index]}")
@@ -21,6 +33,7 @@
                         td(
                             v-for="(head, index_of_head) in header"
                             :key="index_of_head"
+                            :id="`zs-table-col-${head.value}`"
                             :class="`zs-table--align-${head.align ? head.align : 'left'}`"
                         )
                             slot(
@@ -34,7 +47,7 @@
 
                     transition(name="zs-table--subrow")
                         tr(v-if="with_expand && items_of_expands[index]" :key="`subtr-${index}`")
-                            td(:colspan="cell_length" class="zs-table--subcell")
+                            td(:colspan="cell_length + unknown_cell_length" class="zs-table--subcell")
                                 slot(name="expand" :value="item")
 </template>
 
@@ -75,14 +88,19 @@ export default {
         }
     },
     computed: {
-        cell_length() {
-            if (this.data[0]) {
-                const length = Object.keys(this.data[0]).length
-                return this.with_select ? length + 1 : length
-            }
+        unknown_cell_length() {
+            let unknown = 0
 
-            return 0
-        }
+            if (this.with_select) unknown += 1
+
+            return unknown
+        },
+        cell_length() {
+            return Object.keys(this.data[0]).length
+        },
+        has_selected() {
+            return Object.values(this.selected).length
+        },
     },
 
     methods: {
@@ -96,9 +114,9 @@ export default {
         },
         handleSelect(index, is_select, item) {
             if (is_select) {
-                this.selected[index] = item
+                this.$set(this.selected, index, item)
             } else {
-                delete this.selected[index]
+                this.$delete(this.selected, index)
             }
 
             this.$emit('select', Object.values(this.selected))
