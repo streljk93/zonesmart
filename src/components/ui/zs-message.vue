@@ -46,7 +46,6 @@ export default {
         value: {
             handler(v) {
                 if (v && this.delay) {
-                    console.log('okkk')
                     this.timeout = setTimeout(() => {
                         this.value_state = false
                     }, this.delay)

@@ -52,6 +52,8 @@ export default {
         height: 24px !important
         width: 24px
         padding: 0 !important
+        &:disabled i
+            color: $--color-gray !important
         &:hover i
             color: $--color-typo
         i
