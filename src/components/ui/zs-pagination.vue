@@ -7,9 +7,9 @@
                 @click="handleClickLeft"
             ) icon-arrow-left-copy-1
         .zs-pagination--text
-            | {{(current_page - 1) * page_size}}
+            | {{from_size}}
             | —
-            | {{((current_page - 1) * page_size) + page_size}}
+            | {{to_size}}
             | из
             | {{total}}
         .zs-pagination--arrow
@@ -48,6 +48,14 @@ export default {
         },
         right_is_disabled() {
             return this.current_page === Math.ceil(this.total / this.page_size)
+        },
+        from_size() {
+            return (this.current_page - 1) * this.page_size
+        },
+        to_size() {
+            if (this.total < this.page_size) return this.total
+
+            return ((this.current_page - 1) * this.page_size) + this.page_size
         },
     },
 
