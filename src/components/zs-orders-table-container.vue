@@ -26,13 +26,13 @@
                 )
                     template(#cell.name="{item}")
                         div(style="display: flex; align-items: center;")
-                            zs-avatar(:src="item.picture")
+                            zs-avatar(:src="item.image")
                             div(class="zs-orders-table--sku")
-                                div {{item.name}}
-                                div {{item.label}}
+                                div {{item.title}}
+                                div {{item.sku}}
 
 
-            template(#cell.id="{value}")
+            template(#cell.order_id="{value}")
                 zs-link(
                     style="white-space: nowrap"
                     @click="handleOpen"
@@ -52,19 +52,20 @@
             template(#cell.is_paid="{value}")
                 zs-tag(type="icon") icon-check-copy-1
 
-            template(#cell.is_sent="{value}")
+            template(#cell.is_shipped="{value}")
                 zs-tag(type="icon") icon-check-copy-1
 
-            template(#cell.is_delivered="{value}")
+            template(#cell.is_open="{value}")
                 zs-tag(theme="background" type="icon")
 
-            template(#cell.channel="{value}")
-                zs-tag {{value}}
+            template(#cell.shipping_method="{value}") {{value || '–'}}
 
-            template(#cell.amount="{value}") &#36;{{value}}
+            template(#cell.total_price="{value}") &#36;{{value}}
 
         .zs-orders-table--pagination
-            zs-pagination(:total="3")
+            zs-pagination(
+                :total="pagination.count"
+            )
 </template>
 
 <script>
@@ -73,7 +74,7 @@ import ZsTable from '@/components/ui/zs-table'
 import ZsLink from '@/components/ui/zs-link'
 import ZsCheckbox from '@/components/ui/zs-checkbox'
 import ZsTag from '@/components/ui/zs-tag'
-import ZsPagination from '@/components/ui/zs-pagination';
+import ZsPagination from '@/components/ui/zs-pagination'
 import ZsButton from '@/components/ui/zs-button'
 import ZsInput from '@/components/ui/zs-input'
 import ZsAvatar from '@/components/ui/zs-avatar'
@@ -95,41 +96,35 @@ export default {
         return {
             header: [{
                 label: 'ID',
-                value: 'id',
+                value: 'order_id',
             }, {
                 label: 'Товары',
                 value: 'items',
             }, {
                 label: 'Дата заказа',
-                value: 'date',
-            }, {
-                label: 'Статус',
-                value: 'status',
+                value: 'create_date',
             }, {
                 label: 'Оплачено',
                 value: 'is_paid',
                 align: 'center',
             }, {
                 label: 'Отправлено',
-                value: 'is_sent',
+                value: 'is_shipped',
                 align: 'center',
             }, {
                 label: 'Доставлено',
-                value: 'is_delivered',
-                align: 'center',
-            }, {
-                label: 'Канал продаж',
-                value: 'channel',
+                value: 'is_open',
                 align: 'center',
             }, {
                 label: 'Покупатель',
                 value: 'buyer',
             }, {
                 label: 'Метод отправки',
-                value: 'method',
+                value: 'shipping_method',
+                align: 'center',
             }, {
                 label: 'Стоимтость',
-                value: 'amount',
+                value: 'total_price',
                 align: 'right',
             }],
             sub_header: [{
@@ -148,37 +143,30 @@ export default {
                 label: 'Стоимость',
                 value: 'amount',
             }],
-            table_data: [{
-                id: 1034,
-                items: [{
-                    picture: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-                    name: 'Какое-то название',
-                    label: 'mac_pro_16_10',
-                    length: 1,
-                    price: 10,
-                    amount: 10,
-                }, {
-                    picture: 'https://cdn.jpegmini.com/user/images/slider_puffin_before_mobile.jpg',
-                    name: 'Какое-то название',
-                    label: 'mac_pro_16_10',
-                    length: 1,
-                    price: 10,
-                    amount: 10,
-                }],
-                date: '01.11.2020',
-                status: 'В ожидании оплаты',
-                is_paid: false,
-                is_sent: false,
-                is_delivered: false,
-                channel: 'ebay',
-                buyer: 'Harry Potter',
-                method: 'Сова',
-                amount: 10,
-            }],
+            current_page: 1,
         }
+    },
+    computed: {
+        table_data() {
+            return this.$store.state.orders.entity.list.results
+        },
+        pagination() {
+            const list = this.$store.state.orders.entity.list
+            return {
+                count: list.count,
+                next: list.next,
+                previous: list.previous,
+            }
+        },
+        sync() {
+            return true
+        },
     },
 
     methods: {
+        fetchData(options) {
+            this.$store.dispatch('orders/fetchZonesmartOrders', options)
+        },
         handleOpen() {
             console.log('open')
         },
@@ -189,6 +177,15 @@ export default {
             console.log('print', selected)
         },
     },
+
+    watch: {
+        sync: {
+            handler() {
+                this.fetchData({limit: 10, offset: 0})
+            },
+            immediate: true,
+        }
+    }
 }
 </script>
 
@@ -211,6 +208,8 @@ export default {
             &:first-child
                 @include mix--typography-body1
                 font-weight: 500
+                white-space: nowrap
+                overflow: hidden
             &:last-child
                 @include mix--typography-body2
                 color: $--color-typo-label
