@@ -10,10 +10,10 @@ export default {
     modules: {entity, request},
 
     actions: {
-        createAuth({commit}, {email, password}) {
+        create({commit}, {email, password}) {
             commit('request/REQUEST')
 
-            return api.createAuth(email, password)
+            return api.create(email, password)
                 .then(({data}) => {
                     commit('request/SUCCESS', {message: 'Вы успешно вошли в zonesmart!'})
                     commit('entity/SET_ITEM', data)
@@ -24,7 +24,24 @@ export default {
                 .catch(error => {
                     commit('request/ERROR')
 
-                    throw error
+                    return Promise.reject(error)
+                })
+        },
+        refresh({commit}, refresh) {
+            commit('request/REQUEST')
+
+            return api.refresh(refresh)
+                .then(({data}) => {
+                    commit('request/SUCCESS', {message: 'Вы получили новый токен'})
+                    commit('entity/SET_ITEM', data)
+                    localStorage.setItem('auth', JSON.stringify(data))
+
+                    return data
+                })
+                .catch(error => {
+                    commit('request/ERROR', error)
+
+                    return Promise.reject(error)
                 })
         }
     }

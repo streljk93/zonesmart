@@ -1,9 +1,9 @@
 import axios from 'axios'
 
-export const createAuth = (email, password) => {
+export const create = (email, password) => {
     return axios.post('/auth/jwt/create/', {email, password})
 }
 
-export const refreshAuth = (refresh) => {
+export const refresh = (refresh) => {
     return axios.post('/auth/jwt/refresh/', {refresh})
 }

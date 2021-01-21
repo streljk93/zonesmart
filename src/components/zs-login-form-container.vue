@@ -62,7 +62,7 @@ export default {
     methods: {
         async handleCreateAuth() {
             try {
-                await this.$store.dispatch('auth/createAuth', {
+                await this.$store.dispatch('auth/create', {
                     email: this.email,
                     password: this.password,
                 })
