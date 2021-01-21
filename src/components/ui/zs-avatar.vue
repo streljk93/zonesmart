@@ -1,9 +1,12 @@
 <template lang="pug">
-    img.zs-avatar(
-        :src="src"
-        :style="`width: ${size}px; height: ${size}px;`"
+    .zs-avatar(
         :class="{'zs-avatar--background': !src}"
+        :style="`width: ${size}px; height: ${size}px;`"
     )
+        img(
+            v-if="src"
+            :src="src"
+        )
 </template>
 
 <script>
@@ -26,8 +29,11 @@ export default {
 .zs-avatar
     border-radius: $--border-radius-md
     overflow: hidden
-    display: inline-block
-    object-fit: cover
     &--background
-        background: $--color-typo-label
+        background: $--color-gray
+    img
+        display: inline-block
+        object-fit: cover
+        height: 100%
+        width: 100%
 </style>

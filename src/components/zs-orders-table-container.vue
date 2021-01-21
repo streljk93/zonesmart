@@ -2,7 +2,7 @@
     .zs-orders-table
         .zs-orders-table--actions
             zs-button(theme="primary" style="margin-right: 29px") Фильтр
-            zs-input(label="Поиск" style="width: 100%")
+            zs-input(v-model="search" label="Поиск" style="width: 100%" @input="handleSearch")
                 template(#append)
                     i.icon-search-copy-1
         zs-table(
@@ -13,7 +13,15 @@
         )
             template(#actions="{selected}")
                 zs-link(
-                    style="font-weight: 500;"
+                    style="font-weight: 500; margin-right: 24px;"
+                    @click="handleUpdate(selected)"
+                ) Обновить
+                zs-link(
+                    style="font-weight: 500; margin-right: 24px;"
+                    @click="handleDelete(selected)"
+                ) Удалить
+                zs-link(
+                    style="font-weight: 500; margin-right: 24px;"
                     @click="handlePrint(selected)"
                 ) Распечатать инвойс
 
@@ -44,9 +52,11 @@
                 )
                     i(
                         class="icon-x-copy-1"
-                        :style="'font-size: 18px; transform: rotate(' + (items_of_expands[index] ? '0deg' : '45deg') + '); margin-right: 8px'"
+                        :style="'font-size: 18px; transform: rotate(' + (items_of_expands[index] ? '0deg' : '45deg') + '); margin-right: 8px; transition: .3s;'"
                     )
                     | {{value.length}} товар(а)
+
+            template(#cell.create_date="{value}") {{value | simple_date}}
 
             template(#cell.is_paid="{value}")
                 zs-tag(type="icon") icon-check-copy-1
@@ -133,18 +143,16 @@ export default {
                 value: 'name',
             }, {
                 label: 'Заказанное количество',
-                value: 'length',
-            }, {
-                label: 'Отправленное количество',
-                value: 'length',
+                value: 'quantity',
             }, {
                 label: 'Цена',
                 value: 'price',
             }, {
                 label: 'Стоимость',
-                value: 'amount',
+                value: 'total_price',
             }],
             current_page: 1,
+            search: '',
         }
     },
     computed: {
@@ -164,13 +172,31 @@ export default {
             this.$store.dispatch('orders/fetchZonesmartOrders', options)
         },
         handlePagination(params) {
-            params && this.fetchData(params)
+            params && this.fetchData({...params, search: this.search})
+        },
+        handleSearch(value) {
+            clearTimeout(this.$options.$_timeout)
+
+            this.$options.$_timeout = setTimeout(() => {
+
+                const pagination = this.$store.getters['orders/pagination/current_object']
+                pagination.search = value
+
+                this.fetchData(pagination)
+
+            }, 700)
         },
         handleOpen(value) {
             console.info(`open ${value}`)
         },
         handlePrint(selected) {
             console.info('print', selected)
+        },
+        handleUpdate(selected) {
+            console.info('Обновляю', selected.map(item => item.order_id))
+        },
+        handleDelete(selected) {
+            console.info('Удаляю', selected.map(item => item.order_id))
         },
     },
 
@@ -200,12 +226,14 @@ export default {
         display: flex
         flex-direction: column
         justify-content: space-between
+        width: 180px
         div
+            white-space: nowrap
+            overflow: hidden
+            text-overflow: ellipsis
             &:first-child
                 @include mix--typography-body1
                 font-weight: 500
-                white-space: nowrap
-                overflow: hidden
             &:last-child
                 @include mix--typography-body2
                 color: $--color-typo-label

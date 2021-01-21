@@ -21,6 +21,9 @@
 </template>
 
 <script>
+// Constanst
+import {LIMIT} from '@/constants/pagination'
+
 // Components
 import ZsButton from '@/components/ui/zs-button'
 
@@ -46,11 +49,23 @@ export default {
             return this.$store.getters['orders/pagination/next_object']
         },
         from_size() {
-            if (!this.next_object) {
-                return Number(this.previous_object.offset) + Number(this.previous_object.limit)
+            if (!this.next_object && !this.previous_object) {
+                return 0
             }
 
-            return this.next_object.offset - this.next_object.limit
+            if (!this.next_object.offset && !this.previous_object.offset) {
+                return LIMIT
+            }
+
+            if (!this.next_object) {
+                return Number(this.previous_object.offset) + LIMIT
+            }
+
+            if (!this.previous_object) {
+                return Number(this.next_object.offset) - LIMIT
+            }
+
+            return this.next_object.offset - LIMIT
         },
         to_size() {
             if (!this.next_object) return this.value.count
