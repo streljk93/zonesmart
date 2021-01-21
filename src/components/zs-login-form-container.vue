@@ -1,5 +1,5 @@
 <template lang="pug">
-    .zs-login-form
+    validation-observer.zs-login-form(v-slot="{invalid}")
         zs-alert.zs-login-form--alert(
             type="error"
             style="width: 100%"
@@ -8,13 +8,18 @@
             zs-sheet
                 .zs-login-form--title Вход
                 .zs-login-form--item
-                    zs-input(label="E-mail или телефон")
+                    validation-provider(rules="required" v-slot="{errors}")
+                        zs-input(v-model="login" label="E-mail или телефон" :error_message="errors[0]")
                 .zs-login-form--item
-                    zs-input(label="Пароль" type="password")
+                    validation-provider(rules="required" v-slot="{errors}")
+                        zs-input(v-model="password" label="Пароль" type="password" :error_message="errors[0]")
                     zs-link(style="margin-top: 10")
                 .zs-login-form--actions
                     div
-                        zs-button(style="width: 100%") Войти
+                        zs-button(
+                            :disabled="invalid"
+                            style="width: 100%"
+                        ) Войти
                     div(style="text-align: center")
                         zs-link Зарегистрироваться
 
@@ -36,6 +41,13 @@ export default {
         ZsLink,
         ZsButton,
         ZsAlert,
+    },
+
+    data() {
+        return {
+            login: '',
+            password: '',
+        }
     },
 }
 </script>

@@ -119,7 +119,6 @@ export default {
     &--error-message
         @include mix--typography-caption
         color: $--color-error
-        padding-top: 5px
 
     &--label, &--error-message
         white-space: nowrap
