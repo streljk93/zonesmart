@@ -1,6 +1,8 @@
 <template lang="pug">
     .zs-table
         table
+
+            // for setting width columns
             colgroup
                 col(v-if="with_select")
                 col(
@@ -9,6 +11,8 @@
                     :name="`zs-table-col-${head.value}`"
                     :width="head.width || 'auto'"
                 )
+
+            //  header
             thead(:class="{'zs-table--simple-header': with_simple_header}")
                 tr
                     th(v-if="with_select")
@@ -22,6 +26,8 @@
                                     slot(name="actions" :selected="Object.values(selected)")
                                 div(style="visibility: hidden") {{head.label}}
                             div(v-else) {{head.label}}
+
+            // body
             tbody
                 template(v-for="(item, index) in data")
                     tr(:key="index" :class="{'zs-table--hr-hidden': items_of_expands[index]}")
@@ -40,11 +46,13 @@
                                 :name="`cell.${head.value}`"
                                 :index="index"
                                 :value="item[head.value]"
+                                :item="item"
                                 :items_of_expands="items_of_expands"
                                 :handleToggleSubrow="handleToggleSubrow"
                             )
                                 | {{item[head.value]}}
 
+                    // addition expanding tr
                     transition(name="zs-table--subrow")
                         tr(v-if="with_expand && items_of_expands[index]" :key="`subtr-${index}`")
                             td(:colspan="cell_length + unknown_cell_length" class="zs-table--subcell")
@@ -230,6 +238,6 @@ export default {
         text-align: left
 
     th, td
-        height: 57px
+        height: 60px
         padding: 0 20px
 </style>
