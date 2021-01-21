@@ -4,7 +4,7 @@ export default {
     title: 'Buttons',
     component: ZsButton,
     argTypes: {
-        type: {
+        theme: {
             control: {
                 type: 'inline-radio',
                 options: ['accent', 'primary'],
@@ -34,7 +34,7 @@ const Template = (args, {argTypes}) => ({
     components: {ZsButton},
     template: `
         <zs-button
-            :type="type"
+            :theme="theme"
             :size="size"
             :loading="loading"
             :disabled="disabled"
@@ -45,3 +45,12 @@ const Template = (args, {argTypes}) => ({
 })
 
 export const Default = Template.bind({});
+
+export const Icon = () => ({
+    components: {ZsButton},
+    template: `
+        <zs-button type="icon">
+            icon-arrow-right-copy-1
+        </zs-button>
+    `
+})

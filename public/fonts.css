@@ -27,37 +27,30 @@
 
 .icon-arrow-right-copy-1:before {
   content: "\e900";
-  color: #c5c7cd;
 }
 .icon-bell-copy-1:before {
   content: "\e901";
-  color: #c5c7cd;
 }
 .icon-check-copy-1:before {
   content: "\e902";
 }
 .icon-corner-up-right-copy-1:before {
   content: "\e903";
-  color: #3cc8ae;
 }
 .icon-eye-copy-1:before {
   content: "\e904";
-  color: #c5c7cd;
 }
 .icon-eye-off-copy-1:before {
   content: "\e905";
-  color: #c5c7cd;
 }
 .icon-mail-copy-1:before {
   content: "\e906";
-  color: #c5c7cd;
 }
 .icon-menu-copy-1:before {
   content: "\e907";
 }
 .icon-search-copy-1:before {
   content: "\e908";
-  color: #c5c7cd;
 }
 .icon-trash:before {
   content: "\e909";

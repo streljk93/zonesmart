@@ -1,11 +1,13 @@
 <template lang="pug">
     button.zs-button(
         v-bind="$attrs"
-        :class="`zs-button--${type} zs-button--${size}`"
+        :class="`zs-button_${theme} zs-button_${size} zs-button_${type}`"
         :disabled="$attrs.disabled || loading"
         @click="$emit('click')"
     )
-        slot(v-if="!loading")
+        span(v-if="type === 'icon'")
+            i(:class="$slots.default ? $slots.default[0].text : ''")
+        slot(v-else-if="!loading")
         span(v-else) загрузка...
 </template>
 
@@ -14,6 +16,10 @@ export default {
     name: 'ZsButton',
     props: {
         type: {
+            type: String,
+            default: 'flat',
+        },
+        theme: {
             type: String,
             default: 'accent'
         },
@@ -40,19 +46,30 @@ export default {
     align-items: center
     justify-content: center
 
-    &--accent
+    &_icon
+        background: none !important
+        font-size: 24px
+        height: 24px !important
+        width: 24px
+        padding: 0 !important
+        &:hover i
+            color: $--color-typo
+        i
+            color: $--color-typo-label
+
+    &_accent
         background: $--color-accent
         &:hover, &:active
             background: $--color-accent-dark-1
-    &--primary
+    &_primary
         background: $--color-primary
         &:hover, &:active
             background: $--color-primary-dark-1
 
-    &--md
+    &_md
         height: 52px
         padding: 0 32px
-    &--sm
+    &_sm
         height: 32px
         padding: 0 12px
 
