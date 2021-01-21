@@ -27,7 +27,7 @@ export default {
                     return Promise.reject(error)
                 })
         },
-        refresh({commit}, refresh) {
+        refresh({commit, dispatch}, refresh) {
             commit('request/REQUEST')
 
             return api.refresh(refresh)
@@ -35,6 +35,8 @@ export default {
                     commit('request/SUCCESS', {message: 'Вы получили новый токен'})
                     commit('entity/SET_ITEM', data)
                     localStorage.setItem('auth', JSON.stringify(data))
+
+                    dispatch('keeper/runRequests', null, {root: true})
 
                     return data
                 })

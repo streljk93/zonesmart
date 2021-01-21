@@ -24,8 +24,12 @@ export default {
                 })
                 .catch(error => {
                     commit('request/ERROR', error)
+                    commit('keeper/SAVE_REQUEST', {
+                        name: 'orders/fetchZonesmartOrders',
+                        params: data
+                    }, {root: true})
 
-                    throw error
+                    return Promise.reject(error)
                 })
         }
     }
