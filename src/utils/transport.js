@@ -15,7 +15,8 @@ export const handlerHttpError = (error) => {
             if (token_not_valid && refresh) {
                 store.dispatch('auth/refresh', refresh)
             } else {
-                router.push({name: '/Login'})
+                localStorage.removeItem('auth')
+                router.push({name: 'Login'})
             }
             break
         }
